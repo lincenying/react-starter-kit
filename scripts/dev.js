@@ -14,7 +14,7 @@ var config = {
         productionSourceMap: true
     },
     dev: {
-        port: 8088,
+        port: 8080,
         proxyTable: proxyConfig
     }
 }

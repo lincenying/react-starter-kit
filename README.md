@@ -1,28 +1,10 @@
-# mmf-blog react版
+# react-starter-kit
 
-demo: [http://react.mmxiaowu.com](http://react.mmxiaowu.com)
+一个基于 react, react-router, redux, immutable, react-hot-loader 的简单实例,
 
----
+支持热加载, 但是不是非常完美
 
-#### 其他版本
-
-react版本: [https://github.com/lincenying/mmf-blog-react](https://github.com/lincenying/mmf-blog-react)
-
-react(dva)版本: [https://github.com/lincenying/mmf-blog-dva](https://github.com/lincenying/mmf-blog-dva)
-
-vue1版本: [https://github.com/lincenying/mmf-blog-vue](https://github.com/lincenying/mmf-blog-vue)
-
-vue2版本: [https://github.com/lincenying/mmf-blog-vue2](https://github.com/lincenying/mmf-blog-vue2)
-
-vue2(jsx语法)版本: [https://github.com/lincenying/mmf-blog-vue2-jsx](https://github.com/lincenying/mmf-blog-vue2-jsx)
-
-vue2(jsx语法,leancloud)版本: [https://github.com/lincenying/mmf-blog-vue2-jsx-lc](https://github.com/lincenying/mmf-blog-vue2-jsx-lc)
-
-vue2 服务端渲染版本: [https://github.com/lincenying/mmf-blog-vue2-ssr](https://github.com/lincenying/mmf-blog-vue2-ssr)
-
----
-
-先安装 api server: https://github.com/lincenying/mmf-blog-api
+包含 ajax 请求页面, 个人认为, 凡是例子不带 ajax 请求, 都是在耍流氓...
 
 ```
 // 1. 安装依赖
@@ -39,8 +21,5 @@ npm run dev
 npm run start
 ```
 
-首页
+打开:
 http://localhost:8080
-
-登录
-http://localhost:8080/login.html
