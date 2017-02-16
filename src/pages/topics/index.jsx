@@ -9,7 +9,7 @@ import MainItem from "./item.jsx"
 
 function mapStateToProps(state) {
     return {
-        topics: state.topics.toJS().lists
+        topics: state.topics.toJS()
     }
 }
 function mapDispatchToProps(dispatch) {

@@ -4,20 +4,16 @@ import { fromJS } from 'immutable'
 import { errConfig } from '../global'
 
 const initStates = fromJS({
-    article: {
-        data: {},
-        pathname: ''
-    }
+    data: {},
+    pathname: ''
 })
 
 const reducers = {
     ['receiveArticle']: (state, action) => {
         const {data, pathname} = action
         return state.merge({
-            article: {
-                data,
-                pathname
-            }
+            data,
+            pathname
         })
     }
 }

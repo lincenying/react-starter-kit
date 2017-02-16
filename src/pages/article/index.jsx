@@ -8,7 +8,7 @@ import {getArticle} from '~reducers/article'
 
 function mapStateToProps(state) {
     return {
-        article: state.article.toJS().article
+        article: state.article.toJS()
     }
 }
 function mapDispatchToProps(dispatch) {

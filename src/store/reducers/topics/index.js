@@ -4,24 +4,20 @@ import api from '~api'
 import { errConfig } from '../global'
 
 const initStates = fromJS({
-    lists: {
-        data: [],
-        hasNext: 0,
-        page: 1,
-        path: ''
-    }
+    data: [],
+    hasNext: 0,
+    page: 1,
+    path: ''
 })
 
 const reducers = {
     ['receiveTopics']: (state, action) => {
         const {data, page, pathname} = action
-        const lists = page === 1 ? [].concat(data) : state.get('lists').toJS().data.concat(data)
+        const lists = page === 1 ? [].concat(data) : state.toJS().data.concat(data)
         return state.merge({
-            lists: {
-                data: lists,
-                page,
-                pathname
-            }
+            data: lists,
+            page,
+            pathname
         })
     }
 }
