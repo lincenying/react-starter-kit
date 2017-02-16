@@ -22,7 +22,7 @@ const reducers = {
     }
 }
 
-export function getTopics(config) {
+export const getTopics = config => {
     return async dispatch => {
         const { data: { data, success }} = await api.get('https://cnodejs.org/api/v1/topics', config)
         if (success === true) {

@@ -18,7 +18,7 @@ const reducers = {
     }
 }
 
-export function getArticle(config) {
+export const getArticle = config => {
     return async dispatch => {
         const { data: { data, success }} = await api.get('https://cnodejs.org/api/v1/topic/' + config.id)
         if (success === true) {

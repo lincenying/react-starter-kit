@@ -17,7 +17,7 @@ export const errConfig = {
     }
 }
 
-export function setMessage(message) {
+export const setMessage = message => {
     return {
         type: 'setMessage',
         message
