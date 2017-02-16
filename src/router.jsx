@@ -21,7 +21,6 @@ const savePosition = router => {
     }
 }
 const goScrollTop = () => {
-    console.log('enter')
     //window.scrollTo(0, 0)
 }
 

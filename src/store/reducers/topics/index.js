@@ -1,5 +1,7 @@
 import { createReducer } from 'redux-immutablejs'
 import { fromJS } from 'immutable'
+import api from '~api'
+import { errConfig } from '../global'
 
 const initStates = fromJS({
     lists: {
@@ -10,7 +12,7 @@ const initStates = fromJS({
     }
 })
 
-export default createReducer(initStates, {
+const reducers = {
     ['receiveTopics']: (state, action) => {
         const {data, page, pathname} = action
         const lists = page === 1 ? [].concat(data) : state.get('lists').toJS().data.concat(data)
@@ -22,4 +24,20 @@ export default createReducer(initStates, {
             }
         })
     }
-})
+}
+
+export function getTopics(config) {
+    return async dispatch => {
+        const { data: { data, success }} = await api.get('https://cnodejs.org/api/v1/topics', config)
+        if (success === true) {
+            return dispatch({
+                type: 'receiveTopics',
+                data,
+                ...config
+            })
+        }
+        return dispatch(errConfig)
+    }
+}
+
+export default createReducer(initStates, reducers)

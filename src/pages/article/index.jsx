@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {immutableRenderDecorator} from 'react-immutable-render-mixin'
 
 import {propTypes} from '~decorators'
-import {getArticle} from '~actions/article'
+import {getArticle} from '~reducers/article'
 
 function mapStateToProps(state) {
     return {
@@ -23,12 +23,10 @@ function mapDispatchToProps(dispatch) {
 @immutableRenderDecorator
 export default class Article extends Component {
     componentWillMount() {
-        console.log(31)
         const {pathname} = this.props.article
         if (pathname !== this.props.location.pathname) this.handlegetArticle()
     }
     componentDidUpdate(prevProps) {
-        console.log(32)
         const pathname = this.props.location.pathname
         const prevPathname = prevProps.location.pathname
         if (pathname !== prevPathname) this.handlegetArticle()
@@ -41,7 +39,7 @@ export default class Article extends Component {
         const {data} = this.props.article
         return (
             <div>
-                <p>dddddddddddbbbbbbbbbdddddddd</p>
+                <h3>{data.title}</h3>
                 <div dangerouslySetInnerHTML={{__html: data.content}} />
             </div>
         )

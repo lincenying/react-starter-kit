@@ -11,7 +11,7 @@ import 'toastr/build/toastr.min.css'
 export default props => {
     return (
         <div className="g-doc">
-            <h1><Link to="/">列表1a</Link></h1>
+            <h1><Link to="/">列表</Link></h1>
             <ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
                 {React.cloneElement(props.children, {
                     key: props.location.pathname
