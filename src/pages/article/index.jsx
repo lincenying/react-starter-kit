@@ -12,7 +12,8 @@ function mapStateToProps(state) {
     }
 }
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({getArticle}, dispatch)
+    const actions = bindActionCreators({getArticle}, dispatch)
+    return { ...actions, dispatch }
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
