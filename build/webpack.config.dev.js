@@ -15,7 +15,11 @@ var config = merge(baseWebpackConfig, {
             loader: 'style-loader!css-loader!postcss-loader!less-loader'
         }, {
             test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)$/,
-            loader: 'file-loader'
+            loader: 'url-loader',
+            query: {
+                limit: 10000,
+                name: '[name].[hash:7].[ext]'
+            }
         }]
     },
     resolve: {
@@ -36,7 +40,7 @@ var config = merge(baseWebpackConfig, {
         //     names: ["vendor"]
         // }),
         new HtmlWebpackPlugin({
-            //chunks: ['vendor', 'app'],
+            chunks: ['vendor', 'app'],
             filename: 'index.html',
             template: 'src/template/index.html',
             inject: true

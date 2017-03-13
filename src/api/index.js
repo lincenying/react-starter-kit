@@ -2,6 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import NProgress from 'nprogress'
 import config from './config'
+import { setMessage } from '~utils'
 
 axios.interceptors.request.use(config => {
     NProgress.start()
@@ -10,14 +11,25 @@ axios.interceptors.request.use(config => {
     return Promise.reject(error)
 })
 
-axios.interceptors.response.use(response => {
+axios.interceptors.response.use(response => response, error => Promise.resolve(error.response))
+
+function checkStatus(response) {
     NProgress.done()
-    return response
-}, error => {
-    NProgress.done()
-    //store.dispatch('global/showMsg', error.toString())
-    return Promise.reject(error)
-})
+    if (response.status === 200 || response.status === 304) {
+        return response
+    }
+    return {
+        success: false,
+        data: ''
+    }
+}
+
+function checkCode(res) {
+    if (res.data.success !== true) {
+        setMessage(res.data.message)
+    }
+    return res
+}
 
 export default {
     post(url, data) {
@@ -30,7 +42,7 @@ export default {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             }
-        })
+        }).then(checkStatus).then(checkCode)
     },
     get(url, params) {
         return axios({
@@ -41,6 +53,6 @@ export default {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             }
-        })
+        }).then(checkStatus).then(checkCode)
     }
 }

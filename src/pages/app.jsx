@@ -12,6 +12,7 @@ import Nav from '~components/nav.jsx'
 
 import 'nprogress/nprogress.css'
 import 'toastr/build/toastr.min.css'
+import 'assets/less/style.less'
 
 const App = () => {
     return (

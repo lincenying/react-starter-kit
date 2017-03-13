@@ -3,28 +3,14 @@
 var path = require('path')
 var express = require('express')
 var webpack = require('webpack')
-var proxyConfig = require('../config/proxy')
-
-var config = {
-    build: {
-        index: path.resolve(__dirname, 'dist/index.html'),
-        assetsRoot: path.resolve(__dirname, 'dist'),
-        assetsSubDirectory: 'static',
-        assetsPublicPath: '/',
-        productionSourceMap: true
-    },
-    dev: {
-        port: 8080,
-        proxyTable: proxyConfig
-    }
-}
+var config = require('../config')
 var proxyMiddleware = require('http-proxy-middleware')
-var webpackConfig = require('../config/webpack.config.dev')
+var webpackConfig = require('./webpack.config.dev')
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
-// Define HTTP proxies to your custom API backend
-// https://github.com/chimurai/http-proxy-middleware
+    // Define HTTP proxies to your custom API backend
+    // https://github.com/chimurai/http-proxy-middleware
 var proxyTable = config.dev.proxyTable
 
 var app = express()
@@ -39,7 +25,7 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
 })
 
 var hotMiddleware = require('webpack-hot-middleware')(compiler)
-// force page reload when html-webpack-plugin template changes
+    // force page reload when html-webpack-plugin template changes
 compiler.plugin('compilation', function(compilation) {
     compilation.plugin('html-webpack-plugin-after-emit', function(data, cb) {
         hotMiddleware.publish({
@@ -61,7 +47,14 @@ Object.keys(proxyTable).forEach(function(context) {
 })
 
 // handle fallback for HTML5 history API
-app.use(require('connect-history-api-fallback')())
+var history = require('connect-history-api-fallback')
+app.use(history({
+    rewrites: [
+        { from: 'index', to: '/index.html'},
+        { from: /\/backend/, to: '/backend.html'},
+        { from: /^\/backend\/.*$/, to: '/backend.html'},
+    ]
+}))
 
 // serve webpack bundle output
 app.use(devMiddleware)
@@ -71,7 +64,7 @@ app.use(devMiddleware)
 app.use(hotMiddleware)
 
 // serve pure static assets
-var staticPath = path.posix.join(config.build.assetsPublicPath, config.build.assetsSubDirectory)
+var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
 module.exports = app.listen(port, function(err) {

@@ -1,8 +1,8 @@
 import React from 'react'
-import Link from 'react-router-dom/Link'
+import NavLink from 'react-router-dom/NavLink'
 
 const Nav = () => {
-    return <h1><Link to="/">列表</Link></h1>
+    return <h1><NavLink to="/" exact activeClassName="current">列表</NavLink></h1>
 }
 
 export default Nav
