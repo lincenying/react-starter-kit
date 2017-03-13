@@ -1,24 +1,34 @@
 import React from 'react'
+import Router from 'react-router-dom/BrowserRouter'
+import Route from 'react-router-dom/Route'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import Link from 'react-router/lib/Link'
+
+import Main from '~pages/topics/index.jsx'
+import Article from '~pages/article/index.jsx'
 
 import DevTools from '~devtools'
 import Toastr from '~components/global/toastr.jsx'
+import Nav from '~components/nav.jsx'
 
 import 'nprogress/nprogress.css'
 import 'toastr/build/toastr.min.css'
 
-export default props => {
+const App = () => {
     return (
-        <div className="g-doc">
-            <h1><Link to="/">列表</Link></h1>
-            <ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-                {React.cloneElement(props.children, {
-                    key: props.location.pathname
-                })}
-            </ReactCSSTransitionGroup>
-            <DevTools />
-            <Toastr />
-        </div>
+        <Router>
+            <Route render={({ location, history }) =>
+                <div className="g-doc">
+                    <Nav location={location} history={history} />
+                    <ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+                        <Route name="index" path="/" exact component={Main} />
+                        <Route name="article" path="/article/:id" component={Article} />
+                    </ReactCSSTransitionGroup>
+                    <DevTools />
+                    <Toastr />
+                </div>
+            }
+            />
+        </Router>
     )
 }
+export default App

@@ -33,7 +33,7 @@ export default class Article extends Component {
         if (pathname !== prevPathname) this.handlegetArticle()
     }
     handlegetArticle() {
-        const {getArticle, params: {id}, location: {pathname}} = this.props
+        const {getArticle, match: {params: {id}}, location: {pathname}} = this.props
         getArticle({id, pathname})
     }
     render() {
