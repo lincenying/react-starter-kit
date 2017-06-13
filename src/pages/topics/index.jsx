@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
-import {immutableRenderDecorator} from 'react-immutable-render-mixin'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { immutableRenderDecorator } from 'react-immutable-render-mixin'
 import ls from 'store2'
-import {propTypes} from '~decorators'
-import {getTopics} from '~reducers/topics'
+import { propTypes } from '~decorators'
+import { getTopics } from '~reducers/topics'
 import MainItem from "./item.jsx"
 
 function mapStateToProps(state) {
@@ -14,7 +14,7 @@ function mapStateToProps(state) {
     }
 }
 function mapDispatchToProps(dispatch) {
-    const actions = bindActionCreators({getTopics}, dispatch)
+    const actions = bindActionCreators({ getTopics }, dispatch)
     return { ...actions, dispatch }
 }
 
@@ -33,7 +33,7 @@ export default class Main extends Component {
         this.handleLoadMore = this.handleLoadMore.bind(this)
     }
     componentWillMount() {
-        const {pathname} = this.props.topics
+        const { pathname } = this.props.topics
         if (pathname !== this.props.location.pathname) this.handlefetchPosts()
     }
     componentDidMount() {
@@ -55,15 +55,15 @@ export default class Main extends Component {
         }
     }
     handlefetchPosts(page = 1) {
-        const {getTopics, location: {pathname}} = this.props
-        getTopics({page, pathname})
+        const { getTopics, location: { pathname } } = this.props
+        getTopics({ page, pathname })
     }
     handleLoadMore() {
-        const {page} = this.props.topics
+        const { page } = this.props.topics
         this.handlefetchPosts(page + 1)
     }
     render() {
-        const {data} = this.props.topics
+        const { data } = this.props.topics
         const lists = data.map(list => {
             return (
                 <MainItem key={list.id} list={list} />

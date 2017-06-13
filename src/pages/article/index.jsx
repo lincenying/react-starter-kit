@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
-import {immutableRenderDecorator} from 'react-immutable-render-mixin'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { immutableRenderDecorator } from 'react-immutable-render-mixin'
 
-import {propTypes} from '~decorators'
-import {getArticle} from '~reducers/article'
+import { propTypes } from '~decorators'
+import { getArticle } from '~reducers/article'
 
 function mapStateToProps(state) {
     return {
@@ -13,7 +13,7 @@ function mapStateToProps(state) {
     }
 }
 function mapDispatchToProps(dispatch) {
-    const actions = bindActionCreators({getArticle}, dispatch)
+    const actions = bindActionCreators({ getArticle }, dispatch)
     return { ...actions, dispatch }
 }
 
@@ -25,7 +25,7 @@ function mapDispatchToProps(dispatch) {
 @immutableRenderDecorator
 export default class Article extends Component {
     componentWillMount() {
-        const {pathname} = this.props.article
+        const { pathname } = this.props.article
         if (pathname !== this.props.location.pathname) this.handlegetArticle()
     }
     componentDidUpdate(prevProps) {
@@ -34,15 +34,15 @@ export default class Article extends Component {
         if (pathname !== prevPathname) this.handlegetArticle()
     }
     handlegetArticle() {
-        const {getArticle, match: {params: {id}}, location: {pathname}} = this.props
-        getArticle({id, pathname})
+        const { getArticle, match: { params: { id } }, location: { pathname } } = this.props
+        getArticle({ id, pathname })
     }
     render() {
-        const {data} = this.props.article
+        const { data } = this.props.article
         return (
             <div>
                 <h3>{data.title}</h3>
-                <div dangerouslySetInnerHTML={{__html: data.content}} />
+                <div dangerouslySetInnerHTML={{ __html: data.content }} />
             </div>
         )
     }
