@@ -7,7 +7,6 @@ import Main from '~pages/topics/index.jsx'
 import Article from '~pages/article/index.jsx'
 
 import DevTools from '~devtools'
-import Toastr from '~components/global/toastr.jsx'
 import Nav from '~components/nav.jsx'
 
 import 'nprogress/nprogress.css'
@@ -25,7 +24,6 @@ const App = () => {
                         <Route name="article" path="/article/:id" component={Article} />
                     </ReactCSSTransitionGroup>
                     <DevTools />
-                    <Toastr />
                 </div>
             }
             />
