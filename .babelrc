@@ -13,7 +13,8 @@
             "plugins": [
                 "transform-runtime",
                 "transform-object-rest-spread",
-                "babel-plugin-transform-decorators-legacy"
+                "babel-plugin-transform-decorators-legacy",
+                "transform-class-properties"
             ]
         },
         "development": {
@@ -28,7 +29,8 @@
             ],
             "plugins": [
                 "transform-object-rest-spread",
-                "babel-plugin-transform-decorators-legacy"
+                "babel-plugin-transform-decorators-legacy",
+                "transform-class-properties"
             ]
         }
     }

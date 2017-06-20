@@ -25,13 +25,20 @@ function mapDispatchToProps(dispatch) {
 @immutableRenderDecorator
 export default class Article extends Component {
     componentWillMount() {
+        console.log('article: componentWillMount')
         const { pathname } = this.props.article
         if (pathname !== this.props.location.pathname) this.handlegetArticle()
+    }
+    componentDidMount() {
+        console.log('article: componentDidMount')
     }
     componentDidUpdate(prevProps) {
         const pathname = this.props.location.pathname
         const prevPathname = prevProps.location.pathname
-        if (pathname !== prevPathname) this.handlegetArticle()
+        console.log('article: componentDidUpdate', pathname, prevPathname)
+        if (pathname !== prevPathname) {
+            this.handlegetArticle()
+        }
     }
     handlegetArticle() {
         const { getArticle, match: { params: { id } }, location: { pathname } } = this.props

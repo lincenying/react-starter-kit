@@ -33,21 +33,25 @@ export default class Main extends Component {
         this.handleLoadMore = this.handleLoadMore.bind(this)
     }
     componentWillMount() {
+        console.log('topic: componentWillMount')
         const { pathname } = this.props.topics
         if (pathname !== this.props.location.pathname) this.handlefetchPosts()
     }
     componentDidMount() {
+        console.log('topic: componentDidMount')
         const path = this.props.location.pathname
         const scrollTop = ls.get(path) || 0
         ls.remove(path)
         window.scrollTo(0, scrollTop)
     }
     componentDidUpdate(prevProps) {
+        console.log('topic: componentDidUpdate')
         const pathname = this.props.location.pathname
         const prevPathname = prevProps.location.pathname
         if (pathname !== prevPathname) this.handlefetchPosts()
     }
     componentWillUnmount() {
+        console.log('topic: componentWillUnmount')
         const scrollTop = document.body.scrollTop
         const path = this.props.location.pathname
         if (path) {
@@ -65,9 +69,7 @@ export default class Main extends Component {
     render() {
         const { data } = this.props.topics
         const lists = data.map(list => {
-            return (
-                <MainItem key={list.id} list={list} />
-            )
+            return <MainItem key={list.id} list={list} />
         })
         return (
             <div>
