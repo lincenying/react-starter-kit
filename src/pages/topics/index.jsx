@@ -81,7 +81,7 @@ export default class Main extends Component {
             <div>
                 <div>{this.state.msg}</div>
                 <ul>{lists}</ul>
-                <div>
+                <div className="page">
                     <a onClick={this.handleLoadMore} href="javascript:;">
                         加载更多
                     </a>

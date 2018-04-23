@@ -5,6 +5,9 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 var baseWebpackConfig = require('./webpack.config.base')
 var config = merge(baseWebpackConfig, {
+    performance: {
+        hints: false
+    },
     mode: 'development',
     devtool: 'eval',
     module: {

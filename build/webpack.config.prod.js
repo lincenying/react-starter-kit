@@ -12,6 +12,12 @@ const configIndex = require('../config')
 const buildPath = path.join(__dirname, '../dist')
 
 const config = merge(baseWebpackConfig, {
+    performance: {
+        maxEntrypointSize: 500000,
+        assetFilter: function(assetFilename) {
+            return assetFilename.endsWith('.js')
+        }
+    },
     mode: 'production',
     bail: true,
     devtool: false,
