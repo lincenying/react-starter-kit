@@ -1,11 +1,11 @@
 const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const WebpackBar = require('webpackbar')
 
 const baseWebpackConfig = require('./webpack.config.base')
 const configIndex = require('../config')
@@ -94,6 +94,9 @@ const config = merge(baseWebpackConfig, {
                 collapseWhitespace: true,
                 removeRedundantAttributes: true
             }
+        }),
+        new WebpackBar({
+            profile: true
         })
     ]
 })
