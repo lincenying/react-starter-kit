@@ -31,6 +31,7 @@ export default class Article extends Component {
     }
     componentDidMount() {
         console.log('article: componentDidMount')
+        window.scrollTo(0, 0)
     }
     componentDidUpdate(prevProps) {
         const pathname = this.props.location.pathname
@@ -41,27 +42,33 @@ export default class Article extends Component {
         }
     }
     handlegetArticle() {
-        const { getArticle, match: { params: { id } }, location: { pathname } } = this.props
+        const {
+            getArticle,
+            match: {
+                params: { id }
+            },
+            location: { pathname }
+        } = this.props
         getArticle({ id, pathname })
     }
     render() {
         const { data } = this.props.article
-        const rep_lists = data.replies && data.replies.map(list => {
-            return (
-                <li key={list.id}>
-                    <span>{list.author.loginname}:</span>
-                    <div dangerouslySetInnerHTML={{ __html: list.content }} />
-                </li>
-            )
-        })
+        const rep_lists =
+            data.replies &&
+            data.replies.map(list => {
+                return (
+                    <li key={list.id}>
+                        <span>{list.author.loginname}:</span>
+                        <div dangerouslySetInnerHTML={{ __html: list.content }} />
+                    </li>
+                )
+            })
         return (
             <div>
                 <h3>{data.title}</h3>
                 <div dangerouslySetInnerHTML={{ __html: data.content }} />
                 <h3>回帖: </h3>
-                <ul>
-                    {rep_lists}
-                </ul>
+                <ul>{rep_lists}</ul>
             </div>
         )
     }

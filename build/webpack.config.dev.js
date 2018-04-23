@@ -5,27 +5,32 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 var baseWebpackConfig = require('./webpack.config.base')
 var config = merge(baseWebpackConfig, {
+    mode: 'development',
     devtool: 'eval',
     module: {
-        rules: [{
-            test: /\.css$/,
-            loader: 'style-loader!css-loader!postcss-loader'
-        }, {
-            test: /\.less/,
-            loader: 'style-loader!css-loader!postcss-loader!less-loader'
-        }, {
-            test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)$/,
-            loader: 'url-loader',
-            query: {
-                limit: 10000,
-                name: '[name].[hash:7].[ext]'
+        rules: [
+            {
+                test: /\.css$/,
+                loader: 'style-loader!css-loader!postcss-loader'
+            },
+            {
+                test: /\.less/,
+                loader: 'style-loader!css-loader!postcss-loader!less-loader'
+            },
+            {
+                test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)$/,
+                loader: 'url-loader',
+                query: {
+                    limit: 10000,
+                    name: '[name].[hash:7].[ext]'
+                }
             }
-        }]
+        ]
     },
     resolve: {
         alias: {
-            "~store": path.join(__dirname, "../src/store/conf.dev"),
-            "~devtools": path.join(__dirname, "../src/components/global/devtools"),
+            '~store': path.join(__dirname, '../src/store/conf.dev'),
+            '~devtools': path.join(__dirname, '../src/components/global/devtools')
         }
     },
     plugins: [
@@ -40,7 +45,7 @@ var config = merge(baseWebpackConfig, {
         //     names: ["vendor"]
         // }),
         new HtmlWebpackPlugin({
-            chunks: ['vendor', 'app'],
+            chunks: ['app'],
             filename: 'index.html',
             template: 'src/template/index.html',
             inject: true
@@ -49,7 +54,9 @@ var config = merge(baseWebpackConfig, {
 })
 
 Object.keys(config.entry).forEach(function(name) {
-    config.entry[name] = ['react-hot-loader/patch', 'webpack-hot-middleware/client?reload=true&noInfo=false'].concat(config.entry[name])
+    config.entry[name] = ['react-hot-loader/patch', 'webpack-hot-middleware/client?reload=true&noInfo=false'].concat(
+        config.entry[name]
+    )
 })
 
 module.exports = config

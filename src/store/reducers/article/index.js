@@ -10,7 +10,7 @@ const initStates = fromJS({
 
 const reducers = {
     ['receiveArticle']: (state, action) => {
-        const {data, pathname} = action
+        const { data, pathname } = action
         return state.merge({
             data,
             pathname
@@ -20,7 +20,9 @@ const reducers = {
 
 export const getArticle = config => {
     return async dispatch => {
-        const { data: { data, success }} = await api.get('https://cnodejs.org/api/v1/topic/' + config.id)
+        const {
+            data: { data, success }
+        } = await api.get('https://cnodejs.org/api/v1/topic/' + config.id)
         if (success === true) {
             return dispatch({
                 type: 'receiveArticle',

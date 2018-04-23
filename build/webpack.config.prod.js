@@ -1,12 +1,18 @@
-var path = require("path")
-var webpack = require('webpack')
-var merge = require('webpack-merge')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path')
+const webpack = require('webpack')
+const merge = require('webpack-merge')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
-var baseWebpackConfig = require('./webpack.config.base')
-var buildPath = path.join(__dirname, '../dist')
-var config = merge(baseWebpackConfig, {
+const baseWebpackConfig = require('./webpack.config.base')
+const configIndex = require('../config')
+const buildPath = path.join(__dirname, '../dist')
+
+const config = merge(baseWebpackConfig, {
+    mode: 'production',
     bail: true,
     devtool: false,
     output: {
@@ -17,50 +23,70 @@ var config = merge(baseWebpackConfig, {
     },
     resolve: {
         alias: {
-            "~store": path.join(__dirname, "../src/store/conf.prod"),
-            "~devtools": path.join(__dirname, "../src/components/global/devtools-prod"),
+            '~store': path.join(__dirname, '../src/store/conf.prod'),
+            '~devtools': path.join(__dirname, '../src/components/global/devtools-prod')
         }
     },
     module: {
-        rules: [{
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract(['css-loader', 'postcss-loader'])
-        },  {
-            test: /\.less/,
-            loader: ExtractTextPlugin.extract(['css-loader', 'postcss-loader', 'less-loader'])
-        }, {
-            test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)$/,
-            loader: 'url-loader',
-            query: {
-                limit: 10000,
-                name: 'static/img/[name].[hash:7].[ext]'
+        rules: [
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
+            },
+            {
+                test: /\.less/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader']
+            },
+            {
+                test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)$/,
+                loader: 'url-loader',
+                query: {
+                    limit: 10000,
+                    name: 'static/img/[name].[hash:7].[ext]'
+                }
             }
-        }]
+        ]
+    },
+    optimization: {
+        runtimeChunk: {
+            name: 'manifest'
+        },
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    priority: -20,
+                    chunks: 'all'
+                }
+            }
+        },
+        minimizer: [
+            new UglifyJsPlugin({
+                uglifyOptions: {
+                    compress: {
+                        warnings: false
+                    }
+                },
+                sourceMap: configIndex.build.productionSourceMap,
+                parallel: true
+            }),
+            new OptimizeCSSAssetsPlugin({})
+        ]
     },
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': '"production"'
         }),
-        new ExtractTextPlugin('static/css/[name].[contenthash:7].css'),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            minChunks(module) {
-                const reg = /\.js$/
-                return module.resource && reg.test(module.resource) && module.resource.indexOf(path.join(__dirname, '../node_modules')) === 0
-            }
-        }),
-        new webpack.optimize.CommonsChunkPlugin({name: 'manifest', chunks: ['vendor']}),
-        new webpack.optimize.UglifyJsPlugin({
-            compressor: {
-                warnings: false
-            },
-            output: {
-                comments: false
-            }
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: 'static/css/[name].[contenthash:7].css',
+            chunkFilename: 'static/css/[name].[contenthash:7].css'
         }),
         new HtmlWebpackPlugin({
             inject: true,
-            chunks: ['manifest', 'vendor', 'app'],
+            chunks: ['manifest', 'vendors', 'app'],
             filename: 'index.html',
             template: 'src/template/index.html',
             minify: {
@@ -68,7 +94,7 @@ var config = merge(baseWebpackConfig, {
                 collapseWhitespace: true,
                 removeRedundantAttributes: true
             }
-        }),
+        })
     ]
 })
 

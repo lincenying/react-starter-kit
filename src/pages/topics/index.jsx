@@ -6,7 +6,7 @@ import { immutableRenderDecorator } from 'react-immutable-render-mixin'
 import ls from 'store2'
 import { propTypes } from '~decorators'
 import { getTopics } from '~reducers/topics'
-import MainItem from "./item.jsx"
+import MainItem from './item.jsx'
 
 function mapStateToProps(state) {
     return {
@@ -28,9 +28,10 @@ export default class Main extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            msg: 'Hello World!'
+            scrollTop: 0
         }
         this.handleLoadMore = this.handleLoadMore.bind(this)
+        this.onScroll = this.onScroll.bind(this)
     }
     componentWillMount() {
         console.log('topic: componentWillMount')
@@ -42,7 +43,8 @@ export default class Main extends Component {
         const path = this.props.location.pathname
         const scrollTop = ls.get(path) || 0
         ls.remove(path)
-        window.scrollTo(0, scrollTop)
+        if (scrollTop) window.scrollTo(0, scrollTop)
+        window.addEventListener('scroll', this.onScroll)
     }
     componentDidUpdate(prevProps) {
         console.log('topic: componentDidUpdate')
@@ -52,19 +54,23 @@ export default class Main extends Component {
     }
     componentWillUnmount() {
         console.log('topic: componentWillUnmount')
-        const scrollTop = document.body.scrollTop
-        const path = this.props.location.pathname
-        if (path) {
-            if (scrollTop) ls.set(path, scrollTop)
-        }
+        window.removeEventListener('scroll', this.onScroll)
     }
     handlefetchPosts(page = 1) {
-        const { getTopics, location: { pathname } } = this.props
+        const {
+            getTopics,
+            location: { pathname }
+        } = this.props
         getTopics({ page, pathname })
     }
     handleLoadMore() {
         const { page } = this.props.topics
         this.handlefetchPosts(page + 1)
+    }
+    onScroll() {
+        const scrollTop = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop)
+        const path = this.props.location.pathname
+        if (path && scrollTop) ls.set(path, scrollTop)
     }
     render() {
         const { data } = this.props.topics
@@ -74,11 +80,11 @@ export default class Main extends Component {
         return (
             <div>
                 <div>{this.state.msg}</div>
-                <ul>
-                    {lists}
-                </ul>
+                <ul>{lists}</ul>
                 <div>
-                    <a onClick={this.handleLoadMore} href="javascript:;">加载更多</a>
+                    <a onClick={this.handleLoadMore} href="javascript:;">
+                        加载更多
+                    </a>
                 </div>
             </div>
         )

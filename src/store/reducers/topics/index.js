@@ -12,7 +12,7 @@ const initStates = fromJS({
 
 const reducers = {
     ['receiveTopics']: (state, action) => {
-        const {data, page, pathname} = action
+        const { data, page, pathname } = action
         const lists = page === 1 ? [].concat(data) : state.toJS().data.concat(data)
         return state.merge({
             data: lists,
@@ -24,7 +24,9 @@ const reducers = {
 
 export const getTopics = config => {
     return async dispatch => {
-        const { data: { data, success }} = await api.get('https://cnodejs.org/api/v1/topics', config)
+        const {
+            data: { data, success }
+        } = await api.get('https://cnodejs.org/api/v1/topics', config)
         if (success === true) {
             return dispatch({
                 type: 'receiveTopics',
