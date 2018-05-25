@@ -24,9 +24,7 @@ const reducers = {
 
 export const getTopics = config => {
     return async dispatch => {
-        const {
-            data: { data, success }
-        } = await api.get('https://cnodejs.org/api/v1/topics', config)
+        const { data, success } = await api.get('https://cnodejs.org/api/v1/topics', config)
         if (success === true) {
             return dispatch({
                 type: 'receiveTopics',
