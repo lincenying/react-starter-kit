@@ -17,14 +17,17 @@ function mapDispatchToProps(dispatch) {
     return { ...actions, dispatch }
 }
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(
+    mapStateToProps,
+    mapDispatchToProps
+)
 @propTypes({
     article: PropTypes.object,
     getArticle: PropTypes.func.isRequired
 })
 @immutableRenderDecorator
-export default class Article extends Component {
-    componentWillMount() {
+class Article extends Component {
+    UNSAFE_componentWillMount() {
         console.log('article: componentWillMount')
         const { pathname } = this.props.article
         if (pathname !== this.props.location.pathname) this.handlegetArticle()
@@ -73,3 +76,4 @@ export default class Article extends Component {
         )
     }
 }
+export default Article

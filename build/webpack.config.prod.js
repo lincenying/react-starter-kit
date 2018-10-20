@@ -102,7 +102,7 @@ const config = merge(baseWebpackConfig, {
             }
         }),
         new WebpackBar({
-            profile: true
+            profile: false
         })
     ]
 })

@@ -18,13 +18,16 @@ function mapDispatchToProps(dispatch) {
     return { ...actions, dispatch }
 }
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(
+    mapStateToProps,
+    mapDispatchToProps
+)
 @immutableRenderDecorator
 @propTypes({
     getTopics: PropTypes.func.isRequired,
     topics: PropTypes.object
 })
-export default class Main extends Component {
+class Main extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -33,7 +36,7 @@ export default class Main extends Component {
         this.handleLoadMore = this.handleLoadMore.bind(this)
         this.onScroll = this.onScroll.bind(this)
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         console.log('topic: componentWillMount')
         const { pathname } = this.props.topics
         if (pathname !== this.props.location.pathname) this.handlefetchPosts()
@@ -90,3 +93,4 @@ export default class Main extends Component {
         )
     }
 }
+export default Main

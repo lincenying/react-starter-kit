@@ -16,7 +16,7 @@ import 'toastr/build/toastr.min.css'
 import 'assets/less/style.less'
 
 @withRouter
-export default class App extends Component {
+class App extends Component {
     static propTypes = {
         location: PropTypes.shape({
             key: PropTypes.string,
@@ -47,3 +47,4 @@ export default class App extends Component {
         )
     }
 }
+export default App
