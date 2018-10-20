@@ -2703,10 +2703,10 @@ escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   resolved "http://registry.npm.taobao.org/escape-string-regexp/download/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-eslint-config-lcy-react@^3.0.3:
-  version "3.0.3"
-  resolved "http://registry.npm.taobao.org/eslint-config-lcy-react/download/eslint-config-lcy-react-3.0.3.tgz#b75ea5dff50bc08635eab4036138adcd6da05cae"
-  integrity sha1-t16l3/ULwIY16rQDYTitzW2gXK4=
+eslint-config-lcy-react@^3.0.4:
+  version "3.0.4"
+  resolved "http://registry.npm.taobao.org/eslint-config-lcy-react/download/eslint-config-lcy-react-3.0.4.tgz#242bd06d49d800e66aaf25da00ac585309710a93"
+  integrity sha1-JCvQbUnYAOZqryXaAKxYUwlxCpM=
   dependencies:
     babel-eslint "^10.0.1"
     eslint "^5.7.0"

@@ -41,7 +41,7 @@
     "browserslist": "^4.3.0",
     "chalk": "^2.4.1",
     "css-loader": "^1.0.0",
-    "eslint-config-lcy-react": "^3.0.3",
+    "eslint-config-lcy-react": "^3.0.4",
     "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-prettier": "^3.0.0",
     "express": "^4.16.4",
