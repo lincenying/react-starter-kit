@@ -29,12 +29,7 @@ class App extends Component {
             <div className="g-doc">
                 <Nav location={this.props.location} />
                 <TransitionGroup appear>
-                    <CSSTransition
-                        classNames="example"
-                        in={false}
-                        key={this.props.location.key}
-                        timeout={{ appear: 3000, enter: 3000, exit: 300 }}
-                    >
+                    <CSSTransition classNames="example" in={false} key={this.props.location.key} timeout={{ appear: 3000, enter: 3000, exit: 300 }}>
                         <Switch>
                             <Route name="index" path="/" exact component={Main} />
                             <Route name="article" path="/article/:id" component={Article} />
