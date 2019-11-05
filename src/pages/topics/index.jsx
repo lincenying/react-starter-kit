@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { immutableRenderDecorator } from 'react-immutable-render-mixin'
 import ls from 'store2'
-import { propTypes } from '~decorators'
-import { getTopics } from '~reducers/topics'
+import { propTypes } from '@/decorators'
+import { getTopics } from '@/store/reducers/topics'
 import MainItem from './item.jsx'
 
 function mapStateToProps(state) {
@@ -35,11 +35,10 @@ class Main extends Component {
         }
         this.handleLoadMore = this.handleLoadMore.bind(this)
         this.onScroll = this.onScroll.bind(this)
-    }
-    UNSAFE_componentWillMount() {
-        console.log('topic: componentWillMount')
-        const { pathname } = this.props.topics
-        if (pathname !== this.props.location.pathname) this.handlefetchPosts()
+
+        console.log('topic: constructor')
+        const { pathname } = props.topics
+        if (pathname !== props.location.pathname) this.handlefetchPosts()
     }
     componentDidMount() {
         console.log('topic: componentDidMount')
@@ -50,10 +49,12 @@ class Main extends Component {
         window.addEventListener('scroll', this.onScroll)
     }
     componentDidUpdate(prevProps) {
-        console.log('topic: componentDidUpdate')
         const pathname = this.props.location.pathname
         const prevPathname = prevProps.location.pathname
-        if (pathname !== prevPathname) this.handlefetchPosts()
+        if (pathname !== prevPathname) {
+            console.log('topic: componentDidUpdate', pathname, prevPathname)
+            this.handlefetchPosts()
+        }
     }
     componentWillUnmount() {
         console.log('topic: componentWillUnmount')
@@ -85,7 +86,7 @@ class Main extends Component {
                 <div>{this.state.msg}</div>
                 <ul>{lists}</ul>
                 <div className="page">
-                    <a onClick={this.handleLoadMore} href="javascript:;">
+                    <a onClick={this.handleLoadMore} href={null}>
                         加载更多
                     </a>
                 </div>

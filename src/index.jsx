@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { AppContainer } from 'react-hot-loader'
-import { configureCounterStore } from '~store'
+import { configureCounterStore } from '@store'
 import Root from './pages/app'
 
 const store = configureCounterStore()

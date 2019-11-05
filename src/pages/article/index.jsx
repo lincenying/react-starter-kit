@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { immutableRenderDecorator } from 'react-immutable-render-mixin'
 
-import { propTypes } from '~decorators'
-import { getArticle } from '~reducers/article'
+import { propTypes } from '@/decorators'
+import { getArticle } from '@/store/reducers/article'
 
 function mapStateToProps(state) {
     return {
@@ -27,10 +27,11 @@ function mapDispatchToProps(dispatch) {
 })
 @immutableRenderDecorator
 class Article extends Component {
-    UNSAFE_componentWillMount() {
-        console.log('article: componentWillMount')
-        const { pathname } = this.props.article
-        if (pathname !== this.props.location.pathname) this.handlegetArticle()
+    constructor(props) {
+        super(props)
+        console.log('article: constructor')
+        const { pathname } = props.article
+        if (pathname !== props.location.pathname) this.handlegetArticle()
     }
     componentDidMount() {
         console.log('article: componentDidMount')
@@ -39,10 +40,13 @@ class Article extends Component {
     componentDidUpdate(prevProps) {
         const pathname = this.props.location.pathname
         const prevPathname = prevProps.location.pathname
-        console.log('article: componentDidUpdate', pathname, prevPathname)
         if (pathname !== prevPathname) {
+            console.log('article: componentDidUpdate', pathname, prevPathname)
             this.handlegetArticle()
         }
+    }
+    componentWillUnmount() {
+        console.log('article: componentWillUnmount')
     }
     handlegetArticle() {
         const {
