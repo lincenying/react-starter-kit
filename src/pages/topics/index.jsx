@@ -8,19 +8,11 @@ import { propTypes } from '@/decorators'
 import { getTopics } from '@/store/reducers/topics'
 import MainItem from './item.jsx'
 
-function mapStateToProps(state) {
-    return {
-        topics: state.topics.toJS()
-    }
-}
-function mapDispatchToProps(dispatch) {
-    const actions = bindActionCreators({ getTopics }, dispatch)
-    return { ...actions, dispatch }
-}
-
 @connect(
-    mapStateToProps,
-    mapDispatchToProps
+    state => ({
+        topics: state.topics.toJS()
+    }),
+    dispatch => ({ ...bindActionCreators({ getTopics }, dispatch), dispatch })
 )
 @immutableRenderDecorator
 @propTypes({

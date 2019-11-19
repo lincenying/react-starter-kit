@@ -1,17 +1,17 @@
-var path = require('path')
-var webpack = require('webpack')
+const path = require('path')
+const webpack = require('webpack')
 
-var isInNodeModules = 'node_modules' === path.basename(path.resolve(path.join(__dirname, '..', '..')))
-var relativePath = isInNodeModules ? '../../..' : '..'
-var isInDebugMode = process.argv.some(arg => arg.indexOf('--debug-template') > -1)
+const isInNodeModules = 'node_modules' === path.basename(path.resolve(path.join(__dirname, '..', '..')))
+let relativePath = isInNodeModules ? '../../..' : '..'
+const isInDebugMode = process.argv.some(arg => arg.indexOf('--debug-template') > -1)
 if (isInDebugMode) {
     relativePath = '..'
 }
-var srcPath = path.resolve(__dirname, relativePath, 'src')
-var nodeModulesPath = path.join(__dirname, '..', 'node_modules')
-var buildPath = path.join(__dirname, isInNodeModules ? '../../..' : '..', 'dist')
+const srcPath = path.resolve(__dirname, relativePath, 'src')
+const nodeModulesPath = path.join(__dirname, '..', 'node_modules')
+const buildPath = path.join(__dirname, isInNodeModules ? '../../..' : '..', 'dist')
 
-var config = {
+const config = {
     entry: {
         app: [path.join(srcPath, 'index.jsx')]
     },

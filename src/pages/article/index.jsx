@@ -7,19 +7,11 @@ import { immutableRenderDecorator } from 'react-immutable-render-mixin'
 import { propTypes } from '@/decorators'
 import { getArticle } from '@/store/reducers/article'
 
-function mapStateToProps(state) {
-    return {
-        article: state.article.toJS()
-    }
-}
-function mapDispatchToProps(dispatch) {
-    const actions = bindActionCreators({ getArticle }, dispatch)
-    return { ...actions, dispatch }
-}
-
 @connect(
-    mapStateToProps,
-    mapDispatchToProps
+    state => ({
+        article: state.article.toJS()
+    }),
+    dispatch => ({ ...bindActionCreators({ getArticle }, dispatch), dispatch })
 )
 @propTypes({
     article: PropTypes.object,
