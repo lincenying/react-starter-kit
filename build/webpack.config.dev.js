@@ -1,10 +1,10 @@
-var path = require('path')
-var webpack = require('webpack')
-var merge = require('webpack-merge')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path')
+const webpack = require('webpack')
+const merge = require('webpack-merge')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-var baseWebpackConfig = require('./webpack.config.base')
-var config = merge(baseWebpackConfig, {
+const baseWebpackConfig = require('./webpack.config.base')
+const config = merge(baseWebpackConfig, {
     performance: {
         hints: false
     },
@@ -32,8 +32,8 @@ var config = merge(baseWebpackConfig, {
     },
     resolve: {
         alias: {
-            '~store': path.join(__dirname, '../src/store/conf.dev'),
-            '~devtools': path.join(__dirname, '../src/components/global/devtools')
+            '@store': path.join(__dirname, '../src/store/conf.dev'),
+            '@devtools': path.join(__dirname, '../src/components/global/devtools')
         }
     },
     plugins: [

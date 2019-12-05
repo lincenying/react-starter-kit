@@ -1,4 +1,4 @@
-import api from '~api'
+import api from '@/api'
 import { createReducer } from 'redux-immutablejs'
 import { fromJS } from 'immutable'
 import { errConfig } from '../global'

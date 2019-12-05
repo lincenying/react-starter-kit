@@ -4,22 +4,14 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { immutableRenderDecorator } from 'react-immutable-render-mixin'
 
-import { propTypes } from '~decorators'
-import { getArticle } from '~reducers/article'
-
-function mapStateToProps(state) {
-    return {
-        article: state.article.toJS()
-    }
-}
-function mapDispatchToProps(dispatch) {
-    const actions = bindActionCreators({ getArticle }, dispatch)
-    return { ...actions, dispatch }
-}
+import { propTypes } from '@/decorators'
+import { getArticle } from '@/store/reducers/article'
 
 @connect(
-    mapStateToProps,
-    mapDispatchToProps
+    state => ({
+        article: state.article.toJS()
+    }),
+    dispatch => ({ ...bindActionCreators({ getArticle }, dispatch), dispatch })
 )
 @propTypes({
     article: PropTypes.object,
@@ -27,10 +19,11 @@ function mapDispatchToProps(dispatch) {
 })
 @immutableRenderDecorator
 class Article extends Component {
-    UNSAFE_componentWillMount() {
-        console.log('article: componentWillMount')
-        const { pathname } = this.props.article
-        if (pathname !== this.props.location.pathname) this.handlegetArticle()
+    constructor(props) {
+        super(props)
+        console.log('article: constructor')
+        const { pathname } = props.article
+        if (pathname !== props.location.pathname) this.handlegetArticle()
     }
     componentDidMount() {
         console.log('article: componentDidMount')
@@ -39,10 +32,13 @@ class Article extends Component {
     componentDidUpdate(prevProps) {
         const pathname = this.props.location.pathname
         const prevPathname = prevProps.location.pathname
-        console.log('article: componentDidUpdate', pathname, prevPathname)
         if (pathname !== prevPathname) {
+            console.log('article: componentDidUpdate', pathname, prevPathname)
             this.handlegetArticle()
         }
+    }
+    componentWillUnmount() {
+        console.log('article: componentWillUnmount')
     }
     handlegetArticle() {
         const {
@@ -56,22 +52,27 @@ class Article extends Component {
     }
     render() {
         const { data } = this.props.article
-        const rep_lists =
-            data.replies &&
-            data.replies.map(list => {
-                return (
-                    <li key={list.id}>
-                        <span>{list.author.loginname}:</span>
-                        <div dangerouslySetInnerHTML={{ __html: list.content }} />
-                    </li>
-                )
-            })
         return (
             <div>
-                <h3>{data.title}</h3>
-                <div dangerouslySetInnerHTML={{ __html: data.content }} />
-                <h3>回帖: </h3>
-                <ul>{rep_lists}</ul>
+                <div className="article-content" dangerouslySetInnerHTML={{ __html: data.content }} />
+                <div className="reply">
+                    {data.replies &&
+                        data.replies.map(sub_item => {
+                            return (
+                                <div key={sub_item.id} className="reply-item">
+                                    <h5>
+                                        {sub_item.author.loginname}: <span>[{data.create_at}]</span>
+                                    </h5>
+                                    <div
+                                        className="reply-item-content"
+                                        dangerouslySetInnerHTML={{
+                                            __html: sub_item.content
+                                        }}
+                                    />
+                                </div>
+                            )
+                        })}
+                </div>
             </div>
         )
     }

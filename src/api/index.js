@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import NProgress from 'nprogress'
 import config from './config'
-import { setMessage } from '~utils'
+import { setMessage } from '@/utils'
 
 axios.interceptors.request.use(
     config => {
@@ -14,7 +14,10 @@ axios.interceptors.request.use(
     }
 )
 
-axios.interceptors.response.use(response => response, error => Promise.resolve(error.response))
+axios.interceptors.response.use(
+    response => response,
+    error => Promise.resolve(error.response)
+)
 
 function checkStatus(response) {
     NProgress.done()
