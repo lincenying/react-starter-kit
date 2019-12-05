@@ -8,15 +8,7 @@ import DevTools from '@devtools'
 export function configureCounterStore(initialState) {
     const middleware = [thunk]
     const enhancers = []
-    const store = createStore(
-        reducers,
-        initialState,
-        compose(
-            applyMiddleware(...middleware),
-            DevTools.instrument(),
-            ...enhancers
-        )
-    )
+    const store = createStore(reducers, initialState, compose(applyMiddleware(...middleware), DevTools.instrument(), ...enhancers))
     if (module.hot) {
         module.hot.accept('./reducers', () => store.replaceReducer(require('./reducers').default))
     }

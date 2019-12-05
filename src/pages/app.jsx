@@ -26,7 +26,7 @@ class App extends Component {
     render() {
         return (
             // <ScrollToTop>
-            <div className="g-doc">
+            <div className="main">
                 <Nav location={this.props.location} />
                 <TransitionGroup appear>
                     <CSSTransition classNames="example" in={false} key={this.props.location.key} timeout={{ appear: 3000, enter: 3000, exit: 300 }}>
