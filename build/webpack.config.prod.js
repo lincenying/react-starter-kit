@@ -13,7 +13,7 @@ const buildPath = path.join(__dirname, '../dist')
 
 const config = merge(baseWebpackConfig, {
     performance: {
-        maxAssetSize: 500000,
+        maxAssetSize: 600000,
         maxEntrypointSize: 1000000,
         assetFilter: function(assetFilename) {
             return assetFilename.endsWith('.js')
@@ -30,8 +30,8 @@ const config = merge(baseWebpackConfig, {
     },
     resolve: {
         alias: {
-            '~store': path.join(__dirname, '../src/store/conf.prod'),
-            '~devtools': path.join(__dirname, '../src/components/global/devtools-prod')
+            '@store': path.join(__dirname, '../src/store/conf.prod'),
+            '@devtools': path.join(__dirname, '../src/components/global/devtools-prod')
         }
     },
     module: {
@@ -72,7 +72,6 @@ const config = merge(baseWebpackConfig, {
             new UglifyJsPlugin({
                 uglifyOptions: {
                     compress: {
-                        warnings: false
                     }
                 },
                 sourceMap: configIndex.build.productionSourceMap,

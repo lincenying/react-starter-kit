@@ -3,24 +3,17 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { immutableRenderDecorator } from 'react-immutable-render-mixin'
+import { Button } from 'antd'
 import ls from 'store2'
-import { propTypes } from '~decorators'
-import { getTopics } from '~reducers/topics'
+import { propTypes } from '@/decorators'
+import { getTopics } from '@/store/reducers/topics'
 import MainItem from './item.jsx'
 
-function mapStateToProps(state) {
-    return {
-        topics: state.topics.toJS()
-    }
-}
-function mapDispatchToProps(dispatch) {
-    const actions = bindActionCreators({ getTopics }, dispatch)
-    return { ...actions, dispatch }
-}
-
 @connect(
-    mapStateToProps,
-    mapDispatchToProps
+    state => ({
+        topics: state.topics.toJS()
+    }),
+    dispatch => ({ ...bindActionCreators({ getTopics }, dispatch), dispatch })
 )
 @immutableRenderDecorator
 @propTypes({
@@ -31,15 +24,15 @@ class Main extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            scrollTop: 0
+            scrollTop: 0,
+            loading: false
         }
         this.handleLoadMore = this.handleLoadMore.bind(this)
         this.onScroll = this.onScroll.bind(this)
-    }
-    UNSAFE_componentWillMount() {
-        console.log('topic: componentWillMount')
-        const { pathname } = this.props.topics
-        if (pathname !== this.props.location.pathname) this.handlefetchPosts()
+
+        console.log('topic: constructor')
+        const { pathname } = props.topics
+        if (pathname !== props.location.pathname) this.handlefetchPosts()
     }
     componentDidMount() {
         console.log('topic: componentDidMount')
@@ -50,21 +43,25 @@ class Main extends Component {
         window.addEventListener('scroll', this.onScroll)
     }
     componentDidUpdate(prevProps) {
-        console.log('topic: componentDidUpdate')
         const pathname = this.props.location.pathname
         const prevPathname = prevProps.location.pathname
-        if (pathname !== prevPathname) this.handlefetchPosts()
+        if (pathname !== prevPathname) {
+            console.log('topic: componentDidUpdate', pathname, prevPathname)
+            this.handlefetchPosts()
+        }
     }
     componentWillUnmount() {
         console.log('topic: componentWillUnmount')
         window.removeEventListener('scroll', this.onScroll)
     }
-    handlefetchPosts(page = 1) {
+    async handlefetchPosts(page = 1) {
         const {
             getTopics,
             location: { pathname }
         } = this.props
-        getTopics({ page, pathname })
+        this.setState({ loading: true })
+        await getTopics({ page, pathname })
+        this.setState({ loading: false })
     }
     handleLoadMore() {
         const { page } = this.props.topics
@@ -83,12 +80,14 @@ class Main extends Component {
         return (
             <div>
                 <div>{this.state.msg}</div>
-                <ul>{lists}</ul>
-                <div className="page">
-                    <a onClick={this.handleLoadMore} href="javascript:;">
-                        加载更多
-                    </a>
-                </div>
+                <ul>
+                    {lists}
+                    <li className="page">
+                        <Button type="primary" loading={this.state.loading} onClick={this.handleLoadMore}>
+                            加载下一页
+                        </Button>
+                    </li>
+                </ul>
             </div>
         )
     }
