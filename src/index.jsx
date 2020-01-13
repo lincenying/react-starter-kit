@@ -1,17 +1,30 @@
+import { configureCounterStore } from '@store'
+import { Modal } from 'antd'
 import React from 'react'
 import { render } from 'react-dom'
+import { AppContainer } from 'react-hot-loader'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { AppContainer } from 'react-hot-loader'
-import { configureCounterStore } from '@store'
 import Root from './pages/app'
 
 const store = configureCounterStore()
 
+const getConfirmation = (message, callback) => {
+    Modal.confirm({
+        title: message,
+        onCancel: () => {
+            callback(false)
+        },
+        onOk: () => {
+            callback(true)
+        }
+    })
+}
+
 render(
     <AppContainer>
         <Provider store={store}>
-            <Router>
+            <Router getUserConfirmation={getConfirmation}>
                 <Root />
             </Router>
         </Provider>
