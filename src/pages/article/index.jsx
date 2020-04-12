@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import { Avatar, Card, List, Spin } from 'antd'
 import PropTypes from 'prop-types'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import React, { Component } from 'react'
 import { immutableRenderDecorator } from 'react-immutable-render-mixin'
-
-import { propTypes } from '@/decorators'
-import { getArticle } from '@/store/reducers/article'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { propTypes } from '~/decorators'
+import { getArticle } from '~/store/reducers/article'
 
 @connect(
     state => ({
@@ -51,29 +51,35 @@ class Article extends Component {
         getArticle({ id, pathname })
     }
     render() {
-        const { data } = this.props.article
+        const { pathname, data } = this.props.article
         return (
-            <div>
-                <div className="article-content" dangerouslySetInnerHTML={{ __html: data.content }} />
+            <Spin spinning={pathname !== this.props.location.pathname} delay={100} size="large">
+                <Card title={data.title} bordered={false}>
+                    <div className="article-content" dangerouslySetInnerHTML={{ __html: data.content }} />
+                </Card>
                 <div className="reply">
-                    {data.replies &&
-                        data.replies.map(sub_item => {
-                            return (
-                                <div key={sub_item.id} className="reply-item">
-                                    <h5>
-                                        {sub_item.author.loginname}: <span>[{data.create_at}]</span>
-                                    </h5>
-                                    <div
-                                        className="reply-item-content"
-                                        dangerouslySetInnerHTML={{
-                                            __html: sub_item.content
-                                        }}
-                                    />
-                                </div>
-                            )
-                        })}
+                    <List
+                        itemLayout="horizontal"
+                        dataSource={data.replies}
+                        renderItem={item => (
+                            <List.Item>
+                                <List.Item.Meta
+                                    avatar={<Avatar src={item.author.avatar_url} />}
+                                    title={<a href="https://ant.design">{item.author.loginname}</a>}
+                                    description={
+                                        <div
+                                            className="reply-item-content"
+                                            dangerouslySetInnerHTML={{
+                                                __html: item.content
+                                            }}
+                                        />
+                                    }
+                                />
+                            </List.Item>
+                        )}
+                    />
                 </div>
-            </div>
+            </Spin>
         )
     }
 }
