@@ -6,6 +6,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const WebpackBar = require('webpackbar')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const baseWebpackConfig = require('./webpack.config.base')
 const configIndex = require('../config')
@@ -103,7 +104,8 @@ const config = merge(baseWebpackConfig, {
         }),
         new WebpackBar({
             profile: false
-        })
+        }),
+        new BundleAnalyzerPlugin()
     ]
 })
 

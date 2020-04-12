@@ -1,5 +1,5 @@
-import { createReducer } from 'redux-immutablejs'
 import { fromJS } from 'immutable'
+import { createReducer } from 'redux-immutablejs'
 
 const initStates = fromJS({
     message: {
