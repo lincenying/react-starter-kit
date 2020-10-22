@@ -1,5 +1,5 @@
 /* eslint-disable no-inline-comments */
-import { Avatar, Button, List } from 'antd'
+import { Avatar, Button, List, Spin } from 'antd'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { immutableRenderDecorator } from 'react-immutable-render-mixin'
@@ -26,7 +26,8 @@ class Main extends Component {
         super(props)
         this.state = {
             scrollTop: 0,
-            loading: false
+            loading: false,
+            showMoreBtn: true
         }
         this.handleLoadMore = this.handleLoadMore.bind(this)
 
@@ -61,9 +62,9 @@ class Main extends Component {
     }
     async handleLoadMore() {
         const { page } = this.props.topics
-        this.setState({ loading: true })
+        this.setState({ loading: true, showMoreBtn: false })
         await this.handlefetchPosts(page + 1)
-        this.setState({ loading: false })
+        this.setState({ loading: false, showMoreBtn: true })
     }
     render() {
         const { data } = this.props.topics
@@ -97,9 +98,13 @@ class Main extends Component {
                 />
                 <ul>
                     <li className="page">
-                        <Button type="primary" loading={this.state.loading} onClick={this.handleLoadMore}>
-                            加载下一页
-                        </Button>
+                        {this.state.showMoreBtn ? (
+                            <Button type="primary" onClick={this.handleLoadMore}>
+                                加载下一页
+                            </Button>
+                        ) : (
+                            <Spin />
+                        )}
                     </li>
                 </ul>
             </div>

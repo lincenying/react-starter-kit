@@ -17,7 +17,7 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/api': {
-                target: 'http://localhost:4000',
+                target: 'https://www.vue-js.com',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': '/api'
