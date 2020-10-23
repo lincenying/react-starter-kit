@@ -6,7 +6,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const WebpackBar = require('webpackbar')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const baseWebpackConfig = require('./webpack.config.base')
 const configIndex = require('../config')
@@ -16,7 +15,7 @@ const config = merge(baseWebpackConfig, {
     performance: {
         maxAssetSize: 600000,
         maxEntrypointSize: 1000000,
-        assetFilter: function(assetFilename) {
+        assetFilter: function (assetFilename) {
             return assetFilename.endsWith('.js')
         }
     },
@@ -38,19 +37,27 @@ const config = merge(baseWebpackConfig, {
     module: {
         rules: [
             {
-                test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
+                test: /\.(scss|css)$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 2,
+                            sourceMap: false
+                        }
+                    },
+                    'postcss-loader',
+                    'sass-loader'
+                ]
             },
             {
-                test: /\.less/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader']
-            },
-            {
-                test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)$/,
-                loader: 'url-loader',
-                query: {
-                    limit: 10000,
-                    name: 'static/img/[name].[hash:7].[ext]'
+                test: /\.(png|jpe?g|gif)$/i,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: 'static/img/[name].[hash:7].[ext]'
+                    }
                 }
             }
         ]
@@ -72,8 +79,7 @@ const config = merge(baseWebpackConfig, {
         minimizer: [
             new UglifyJsPlugin({
                 uglifyOptions: {
-                    compress: {
-                    }
+                    compress: {}
                 },
                 sourceMap: configIndex.build.productionSourceMap,
                 parallel: true
@@ -104,8 +110,7 @@ const config = merge(baseWebpackConfig, {
         }),
         new WebpackBar({
             profile: false
-        }),
-        new BundleAnalyzerPlugin()
+        })
     ]
 })
 
